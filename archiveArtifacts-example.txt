@@ -1,0 +1,23 @@
+stages {
+    stage('job1') {
+        steps {
+            sh 'ls'
+        }
+    }
+}
+post {
+    always {
+        script {
+            sh """
+            result="${currentBuild.currentResult}"
+            timetaken="${currentBuild.durationString.minus(' and counting')}"
+            
+            touch "testfile.txt"
+            echo "result: \${result}" > testfile.txt
+            echo "timetaken: \${timetaken}" >> testfile.txt
+            echo "joburl: joburl/job/${env.JOB_NAME}/${env.BUILD_NUMBER}" >> testfile.txt
+            """
+            archiveArtifacts artifacts: 'testfile.txt', fingerprint: true
+        }
+    }
+}

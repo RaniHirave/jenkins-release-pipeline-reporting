@@ -1,0 +1,6 @@
+step([$class: 'CopyArtifact',
+    filter: 'testfile.txt',
+    fingerprintArtifacts: true,
+    projectName: '${JOB_NAME}',
+    selector: [$class: 'SpecificBuildSelector', buildNumber: '${BUILD_NUMBER}']
+])
